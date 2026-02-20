@@ -1,0 +1,67 @@
+To ensure your SplitBite demo runs perfectly, here is a structured README.md file you can use. This guide covers the specific order of operations for Java, Python, and the React frontend, including the ngrok configuration required for your presentation.
+
+🍕 SplitBite: Hyperlocal Food Bill Splitter
+This guide outlines the steps to launch the Java backend, Python AI service, and React frontend using VS Code.
+
+🚀 Step 1: Database Setup (PostgreSQL)
+Open pgAdmin or your terminal.
+
+Create a database named splitbite.
+
+Run the following command to ensure a clean state for your demo:
+
+SQL
+TRUNCATE TABLE orders RESTART IDENTITY;
+🐍 Step 2: Python AI Service (Port 8000)
+Open a terminal in the /python folder.
+
+Install dependencies:
+
+Bash
+pip install -r requirements.txt
+Run the server:
+
+Bash
+python -m uvicorn main:app --reload --port 8000
+Important: Open a new terminal and expose this port via ngrok:
+
+Bash
+ngrok http 8000
+Copy the generated https://... URL for the next step.
+
+☕ Step 3: Java Spring Boot Backend (Port 8080)
+Open the project in VS Code (ensure the Extension Pack for Java is installed).
+
+Go to src/main/java/com/splitbite/controller/OrderController.java.
+
+Update the pythonServiceUrl with your Python ngrok URL from Step 2.
+
+Run the application via the Run button or F5.
+
+Important: Open a new terminal and expose this port via ngrok:
+
+Bash
+ngrok http 8080
+Copy this https://... URL; this is your Main API URL.
+
+💻 Step 4: React Frontend (Vite)
+Open a terminal in the /frontend folder.
+
+Install dependencies:
+
+Bash
+npm install
+Update the NGROK_URL in join.jsx, create.jsx, and TrackingPage.jsx with your Java ngrok URL from Step 3 [cite: 2026-02-12, 2026-02-18].
+
+Launch the frontend:
+
+Bash
+npm run dev
+🛠️ Demo Workflow
+Host (Person 1): Open the local Vite link, enter ₹100, and click "Host Room."
+
+Joiner (Person 2): Open the Java ngrok URL on a second device, find the host on the radar, enter ₹20, and "Join."
+
+Delivery: Host clicks "Confirm Food Received" on their tracking page.
+
+OTP Handshake: Joiner gives the 4-digit OTP shown on their screen to the Host to verify the split.
