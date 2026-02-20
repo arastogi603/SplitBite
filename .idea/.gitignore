@@ -1,0 +1,8 @@
+# Java/IntelliJ stuff
+target/
+*.class
+.idea/
+*.iml
+out/
+.gradle/
+build/
