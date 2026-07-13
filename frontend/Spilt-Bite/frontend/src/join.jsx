@@ -20,7 +20,7 @@ const JoinPageExpanded = () => {
 
     const getFeed = async (latitude, longitude) => {
       try {
-        const response = await axios.get(`http://localhost:8080/api/orders/feed`, {
+        const response = await axios.get(`https://splitbite-backend.onrender.com/api/orders/feed`, {
           params: { lat: latitude, lon: longitude },
           headers: { Authorization: `Bearer ${token}` }
         });
@@ -51,7 +51,7 @@ const JoinPageExpanded = () => {
   const submitJoinRequest = async () => {
     if (!joinerData.price || !joinerData.items) return alert("Fill all fields!");
     try {
-      await axios.post(`http://localhost:8080/api/orders/${selectedOrder.id}/join`, null, {
+      await axios.post(`https://splitbite-backend.onrender.com/api/orders/${selectedOrder.id}/join`, null, {
         params: { 
           price: parseFloat(joinerData.price),
           items: joinerData.items 

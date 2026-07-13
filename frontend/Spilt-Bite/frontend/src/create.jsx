@@ -41,7 +41,7 @@ const CreateSessionPage = () => {
     if (isWaiting && orderId) {
       interval = setInterval(async () => {
         try {
-          const res = await axios.get(`http://localhost:8080/api/orders/${orderId}`, {
+          const res = await axios.get(`https://splitbite-backend.onrender.com/api/orders/${orderId}`, {
             headers: { Authorization: `Bearer ${token}` }
           });
           
@@ -81,7 +81,7 @@ const CreateSessionPage = () => {
 
     try {
       const response = await axios.post(
-        "http://localhost:8080/api/orders/create", 
+        "https://splitbite-backend.onrender.com/api/orders/create", 
         payload,
         { headers: { Authorization: `Bearer ${token}` } }
       );

@@ -4,7 +4,7 @@ import time
 
 # CONNECTION TO JAVA
 # We use localhost because both are on your machine now.
-JAVA_URL = "http://localhost:8080/api/orders/create"
+JAVA_URL = "https://splitbite-backend.onrender.com/api/orders/create"
 
 # CENTER POINT (e.g., Your College Campus)
 CAMPUS_LAT = 28.6139 

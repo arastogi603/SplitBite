@@ -25,7 +25,7 @@ const TrackingPage = () => {
   useEffect(() => {
     const fetchOrder = async () => {
       try {
-        const res = await axios.get(`http://localhost:8080/api/orders/${id}`, {
+        const res = await axios.get(`https://splitbite-backend.onrender.com/api/orders/${id}`, {
           headers: { Authorization: `Bearer ${token}` }
         });
         setOrder(res.data);
@@ -38,7 +38,7 @@ const TrackingPage = () => {
 
   const handleReceived = async () => {
     try { 
-      await axios.post(`http://localhost:8080/api/orders/${id}/delivered`, null, {
+      await axios.post(`https://splitbite-backend.onrender.com/api/orders/${id}/delivered`, null, {
         headers: { Authorization: `Bearer ${token}` }
       });
     } catch (err) { alert("Status update failed"); }
@@ -47,7 +47,7 @@ const TrackingPage = () => {
   const handleVerifyOtp = async () => {
     setIsVerifying(true);
     try {
-      await axios.post(`http://localhost:8080/api/orders/${id}/verify-otp`, null, { 
+      await axios.post(`https://splitbite-backend.onrender.com/api/orders/${id}/verify-otp`, null, { 
         params: { otp: otpInput },
         headers: { Authorization: `Bearer ${token}` }
       });

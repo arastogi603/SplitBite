@@ -14,7 +14,7 @@ export default function Login() {
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      const res = await axios.post('http://localhost:8080/api/auth/login', { email, password });
+      const res = await axios.post('https://splitbite-backend.onrender.com/api/auth/login', { email, password });
       login(res.data.token);
       navigate('/');
     } catch (err) {
@@ -27,7 +27,7 @@ export default function Login() {
       // In a real app, send the token to the backend to be verified.
       // For this hackathon, we decode it locally and send the email/name to the backend OAuth endpoint.
       const decoded = (await import('jwt-decode')).jwtDecode(credentialResponse.credential);
-      const res = await axios.post('http://localhost:8080/api/auth/oauth/google', {
+      const res = await axios.post('https://splitbite-backend.onrender.com/api/auth/oauth/google', {
         email: decoded.email,
         name: decoded.name
       });

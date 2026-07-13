@@ -15,9 +15,9 @@ export default function Register() {
   const handleRegister = async (e) => {
     e.preventDefault();
     try {
-      await axios.post('http://localhost:8080/api/auth/register', { name, email, password });
+      await axios.post('https://splitbite-backend.onrender.com/api/auth/register', { name, email, password });
       // Auto-login after register
-      const res = await axios.post('http://localhost:8080/api/auth/login', { email, password });
+      const res = await axios.post('https://splitbite-backend.onrender.com/api/auth/login', { email, password });
       login(res.data.token);
       navigate('/');
     } catch (err) {
@@ -28,7 +28,7 @@ export default function Register() {
   const handleGoogleSuccess = async (credentialResponse) => {
     try {
       const decoded = (await import('jwt-decode')).jwtDecode(credentialResponse.credential);
-      const res = await axios.post('http://localhost:8080/api/auth/oauth/google', {
+      const res = await axios.post('https://splitbite-backend.onrender.com/api/auth/oauth/google', {
         email: decoded.email,
         name: decoded.name
       });
