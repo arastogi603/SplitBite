@@ -44,6 +44,9 @@ export default function Login() {
       <div className="absolute bottom-0 right-0 w-[50vw] h-[50vh] bg-blue-900/10 blur-[120px] rounded-[100%] pointer-events-none" />
       
       <div className="glass p-10 rounded-3xl w-full max-w-md z-10 text-white shadow-2xl border border-white/10 backdrop-blur-xl bg-black/40">
+        <Link to="/" className="inline-flex items-center text-sm text-white/50 hover:text-white mb-6 transition-colors">
+          <span className="mr-2">←</span> Back to Main Menu
+        </Link>
         <h2 className="text-4xl font-bold mb-6 text-center tracking-tight">Welcome Back</h2>
         
         {error && <p className="text-red-400 text-sm mb-4 text-center">{error}</p>}

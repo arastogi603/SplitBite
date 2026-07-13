@@ -22,6 +22,12 @@ const CreateSessionPage = () => {
   const presets = [15, 30, 45, 60];
 
   useEffect(() => {
+    if (!token) {
+      navigate('/login');
+    }
+  }, [token, navigate]);
+
+  useEffect(() => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         (position) => {
