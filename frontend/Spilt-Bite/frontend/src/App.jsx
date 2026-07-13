@@ -83,7 +83,7 @@ const Home = () => {
 
 function App() {
   return (
-    <GoogleOAuthProvider clientId="YOUR_GOOGLE_CLIENT_ID_HERE">
+    <GoogleOAuthProvider clientId="292549241083-6h5p0avb0h8066lc1sfma2jqps95qi8n.apps.googleusercontent.com">
       <AuthProvider>
         <div className="bg-[var(--color-background)] min-h-screen text-[var(--color-ink-base)] selection:bg-yellow-400/30 selection:text-yellow-100">
           <Routes>
