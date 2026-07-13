@@ -43,7 +43,7 @@ public class SecurityConfig {
             .cors(cors -> cors.configurationSource(corsConfigurationSource())) // Enable CORS with explicit configuration
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers(org.springframework.http.HttpMethod.OPTIONS, "/**").permitAll() // Allow all preflight requests
-                .requestMatchers("/api/auth/**", "/api/health").permitAll() // Allow authentication and health endpoints
+                .requestMatchers("/api/auth/**", "/api/health", "/error").permitAll() // Allow authentication, health, and error endpoints
                 .anyRequest().authenticated() // Require authentication for everything else
             )
             .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)); // Stateless session

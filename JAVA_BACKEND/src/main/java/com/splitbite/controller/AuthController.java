@@ -59,29 +59,30 @@ public class AuthController {
 
     @PostMapping("/oauth/google")
     public ResponseEntity<?> authenticateGoogleUser(@RequestBody AuthRequest authRequest) {
-        // Here you would normally verify the Google ID token sent from the frontend using a library like google-api-client.
-        // For simplicity, we assume the frontend has successfully authenticated with Google and is passing the email and an ID.
-        // In a real application, you MUST verify the token server-side.
-        
-        Optional<User> userOptional = userRepository.findByEmail(authRequest.getEmail());
-        User user;
-        
-        if (userOptional.isPresent()) {
-            user = userOptional.get();
-            // Update name if changed
-            user.setName(authRequest.getName());
-            userRepository.save(user);
-        } else {
-            user = new User();
-            user.setEmail(authRequest.getEmail());
-            user.setName(authRequest.getName());
-            user.setOauthProvider("google");
-            // Set a dummy password for OAuth users to satisfy DB constraints if needed, or allow null
-            user.setPassword(passwordEncoder.encode("OAUTH_USER_PASSWORD_PLACEHOLDER")); 
-            userRepository.save(user);
-        }
+        try {
+            Optional<User> userOptional = userRepository.findByEmail(authRequest.getEmail());
+            User user;
+            
+            if (userOptional.isPresent()) {
+                user = userOptional.get();
+                // Update name if changed
+                user.setName(authRequest.getName());
+                userRepository.save(user);
+            } else {
+                user = new User();
+                user.setEmail(authRequest.getEmail());
+                user.setName(authRequest.getName());
+                user.setOauthProvider("google");
+                // Set a dummy password for OAuth users to satisfy DB constraints if needed, or allow null
+                user.setPassword(passwordEncoder.encode("OAUTH_USER_PASSWORD_PLACEHOLDER")); 
+                userRepository.save(user);
+            }
 
-        final String jwt = jwtUtil.generateToken(user.getEmail());
-        return ResponseEntity.ok(new AuthResponse(jwt, "Google Login successful"));
+            final String jwt = jwtUtil.generateToken(user.getEmail());
+            return ResponseEntity.ok(new AuthResponse(jwt, "Google Login successful"));
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.badRequest().body(new AuthResponse(null, "Server Error during OAuth: " + e.getMessage()));
+        }
     }
 }
