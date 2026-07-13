@@ -16,6 +16,11 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+# HEALTH CHECK ENDPOINT FOR UPTIMEROBOT
+@app.get("/health")
+def health_check():
+    return {"status": "Python Backend is awake and healthy!"}
+
 # 2. DATA MODELS
 class Order(BaseModel):
     id: Optional[int] = None
