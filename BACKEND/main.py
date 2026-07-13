@@ -16,7 +16,8 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# HEALTH CHECK ENDPOINT FOR UPTIMEROBOT
+# HEALTH CHECK ENDPOINTS FOR RENDER/UPTIMEROBOT
+@app.get("/")
 @app.get("/health")
 def health_check():
     return {"status": "Python Backend is awake and healthy!"}
