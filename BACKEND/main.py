@@ -10,7 +10,7 @@ app = FastAPI()
 # This allows your Java ngrok URL to access this Python service
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["https://ungrateful-noninflationary-pinkie.ngrok-free.dev"], # In production, replace "*" with your Java ngrok URL [cite: 2026-02-18]
+    allow_origins=["*"], # Allow all origins in production for ease of setup
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
