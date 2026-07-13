@@ -57,5 +57,5 @@ def filter_orders(request: FilterRequest):
         if dist_km <= 2.0: 
             nearby_list.append(order)
             
-    print(f"📡 AI Filter: Received {len(request.orders)} | Returning {len(nearby_list)} nearby.")
+    print(f"[Radar] AI Filter: Received {len(request.orders)} | Returning {len(nearby_list)} nearby.")
     return {"nearby_orders": nearby_list}

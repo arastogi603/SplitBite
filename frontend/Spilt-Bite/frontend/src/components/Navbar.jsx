@@ -1,113 +1,162 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Menu, X, ChevronDown, User, LogIn } from "lucide-react";
-import { Link } from "react-router-dom";
-import Contact from "../contact";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { AuthContext } from "./AuthContext";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
+  const { user, logout } = React.useContext(AuthContext);
+  const location = useLocation();
+  const navigate = useNavigate();
 
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 20);
+    };
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  const navLinks = [
+    { name: "Home", path: "/" },
+    { name: "Contact", path: "/contact" },
+    { name: "Create", path: "/create" },
+  ];
 
   return (
-    <nav className="sticky top-0 z-50 shadow-sm rounded-2xl">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <nav 
+      className={`fixed top-4 left-1/2 -translate-x-1/2 z-50 w-[calc(100%-2rem)] max-w-7xl transition-all duration-300 rounded-full ${
+        isScrolled ? "glass" : "bg-transparent"
+      }`}
+    >
+      <div className="px-6 sm:px-8">
         <div className="flex justify-between items-center h-16">
-          <div className="shrink-0 flex items-center gap-2 cursor-pointer">
-            <div className="w-10 h-10 bg-red-500 rounded-full flex items-center justify-center shadow-md overflow-hidden">
+          {/* Brand Logo */}
+          <div className="shrink-0 flex items-center gap-3 cursor-pointer group">
+            <div className="w-9 h-9 rounded-full flex items-center justify-center overflow-hidden border border-white/10 group-hover:border-yellow-400/50 transition-colors">
               <img
                 src="/logo.jpg"
-                alt="Logo"
-                className="w-full h-full object-cover"
+                alt="SplitBite Logo"
+                className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500 ease-out"
               />
             </div>
             <Link
               to="/"
-              className="text-xl font-bold tracking-tight text-white"
+              className="text-xl font-bold tracking-tight text-white group-hover:text-yellow-400 transition-colors duration-300"
             >
-              Split<span className="text-amber-500">Bite</span>
+              Split<span className="text-yellow-400 group-hover:text-white transition-colors duration-300">Bite</span>
             </Link>
           </div>
 
-          <div className="hidden md:flex items-center space-x-8">
-            <Link
-              to="/"
-              className="text-white hover:text-red-500 font-medium transition-colors"
-            >
-              Home
-            </Link>
-            <Link
-              to="/contact"
-              className="text-white hover:text-red-500 font-medium transition-colors"
-            >
-              Contact
-            </Link>
-            <Link
-              to="/create"
-              className="text-white hover:text-red-500 font-medium transition-colors"
-            >
-              Create
-            </Link>
+          {/* Desktop Navigation */}
+          <div className="hidden md:flex items-center space-x-1">
+            {navLinks.map((link) => {
+              const isActive = location.pathname === link.path;
+              return (
+                <Link
+                  key={link.name}
+                  to={link.path}
+                  className={`relative px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 ${
+                    isActive ? "text-yellow-400" : "text-white/70 hover:text-white hover:bg-white/5"
+                  }`}
+                >
+                  {link.name}
+                  {isActive && (
+                    <span className="absolute bottom-1 left-1/2 -translate-x-1/2 w-1 h-1 bg-yellow-400 rounded-full" />
+                  )}
+                </Link>
+              );
+            })}
+          </div>
 
-            <div className="h-6 w-px bg-white/20 mx-2"></div>
+          {/* Desktop Auth / Profile */}
+          <div className="hidden md:flex items-center">
+            <div className="h-5 w-px bg-white/10 mx-6"></div>
 
-            {/* 2. CONDITIONAL RENDERING */}
-            {!isLoggedIn ? (
-              /* SHOW LOGIN BUTTON IF NOT LOGGED IN */
+            {!user ? (
               <button
-                onClick={() => setIsLoggedIn(true)} // Mock login for testing
-                className="flex ml-4 items-center gap-2 bg-red-700 cursor-pointer hover:bg-red-800 text-white px-5 py-2 rounded-full font-bold transition-all active:scale-95 shadow-lg"
+                onClick={() => navigate('/login')}
+                className="group flex items-center gap-2 bg-white text-black hover:bg-yellow-400 px-5 py-2 rounded-full font-semibold transition-all duration-300 active:scale-95"
               >
-                <LogIn size={18} />
-                Login
+                <LogIn size={16} className="transition-transform group-hover:-translate-x-1" />
+                <span>Log In</span>
               </button>
             ) : (
-              /* SHOW PROFILE DIV IF LOGGED IN */
-              <div className="flex items-center gap-3 cursor-pointer group px-3 py-1.5 rounded-lg hover:bg-white/10 transition-all">
-                <div className="text-right">
-                  <p className="text-sm font-semibold text-white leading-tight">
-                    Alex Rossi
-                  </p>
-                  <p className="text-[11px] text-amber-400 font-medium">
-                    Gold Member
-                  </p>
-                </div>
+              <div 
+                onClick={() => { logout(); navigate('/'); }}
+                className="flex items-center gap-3 cursor-pointer group p-1 pr-3 rounded-full hover:bg-white/5 border border-transparent hover:border-white/10 transition-all"
+                title="Click to logout"
+              >
                 <div className="relative">
-                  <div className="w-10 h-10 rounded-full bg-gray-200 border-2 border-white overflow-hidden shadow-sm flex items-center justify-center text-gray-500 group-hover:border-red-500 transition-all">
-                    <User size={20} />
+                  <div className="w-9 h-9 rounded-full bg-white/10 overflow-hidden flex items-center justify-center text-white/50 group-hover:text-red-400 transition-colors">
+                    <User size={18} />
                   </div>
-                  <span className="absolute bottom-0 right-0 w-3 h-3 bg-green-500 border-2 border-white rounded-full"></span>
+                  <span className="absolute bottom-0 right-0 w-2.5 h-2.5 bg-yellow-400 border-2 border-black rounded-full"></span>
                 </div>
-                <ChevronDown
-                  size={14}
-                  className="text-white/70 group-hover:text-red-500"
-                />
+                <div className="flex flex-col text-left mr-2">
+                  <span className="text-sm font-semibold text-white leading-none">{user.email.split('@')[0]}</span>
+                  <span className="text-[10px] text-white/40 uppercase tracking-widest mt-1">Logout</span>
+                </div>
               </div>
             )}
           </div>
 
           {/* Mobile Menu Button */}
-          <div className="md:hidden">
+          <div className="md:hidden flex items-center">
             <button
               onClick={() => setIsOpen(!isOpen)}
-              className="p-2 text-white"
+              className="p-2 text-white/70 hover:text-white transition-colors"
             >
-              {isOpen ? <X size={28} /> : <Menu size={28} />}
+              {isOpen ? <X size={24} /> : <Menu size={24} />}
             </button>
           </div>
         </div>
       </div>
 
-      {/* Mobile Menu (simplified for brevity) */}
-      {isOpen && (
-        <div className="md:hidden bg-white p-4 space-y-4 rounded-b-2xl shadow-xl">
-          {/* ... existing links ... */}
-          {!isLoggedIn && (
-            <button className="w-full bg-red-600 text-white py-3 rounded-xl font-bold">
-              Login
-            </button>
-          )}
+      {/* Mobile Menu Dropdown */}
+      <div 
+        className={`md:hidden absolute top-full left-0 w-full mt-2 transition-all duration-300 origin-top overflow-hidden glass rounded-3xl ${
+          isOpen ? "opacity-100 scale-y-100" : "opacity-0 scale-y-0"
+        }`}
+      >
+        <div className="p-4 space-y-2">
+          {navLinks.map((link) => (
+            <Link
+              key={link.name}
+              to={link.path}
+              onClick={() => setIsOpen(false)}
+              className="block px-4 py-3 rounded-2xl text-white/80 hover:text-white hover:bg-white/5 font-medium transition-colors"
+            >
+              {link.name}
+            </Link>
+          ))}
+          <div className="pt-2 pb-1 border-t border-white/10 mt-2">
+            {!user ? (
+              <button 
+                onClick={() => { navigate('/login'); setIsOpen(false); }}
+                className="w-full flex items-center justify-center gap-2 bg-yellow-400 text-black py-3 rounded-2xl font-bold mt-2"
+              >
+                <LogIn size={18} />
+                Log In
+              </button>
+            ) : (
+              <div 
+                onClick={() => { logout(); navigate('/'); setIsOpen(false); }}
+                className="flex items-center gap-3 p-3 rounded-2xl bg-white/5 mt-2 cursor-pointer hover:bg-white/10"
+              >
+                <div className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center">
+                  <User size={20} className="text-red-400" />
+                </div>
+                <div>
+                  <div className="text-sm font-semibold text-white">{user.email.split('@')[0]}</div>
+                  <div className="text-xs text-red-400">Logout</div>
+                </div>
+              </div>
+            )}
+          </div>
         </div>
-      )}
+      </div>
     </nav>
   );
 };
