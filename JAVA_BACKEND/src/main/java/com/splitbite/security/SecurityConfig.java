@@ -37,7 +37,7 @@ public class SecurityConfig {
             .csrf(AbstractHttpConfigurer::disable) // Disable CSRF for stateless REST APIs
             .cors(cors -> cors.configure(http))    // Enable CORS (you might need a CorsConfigurationSource bean)
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/api/auth/**").permitAll() // Allow all requests to authentication endpoints
+                .requestMatchers("/api/auth/**", "/api/health").permitAll() // Allow authentication and health endpoints
                 .anyRequest().authenticated() // Require authentication for everything else
             )
             .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)); // Stateless session
