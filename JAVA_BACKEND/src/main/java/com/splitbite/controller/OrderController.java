@@ -55,7 +55,7 @@ public class OrderController {
         requestBody.setOrders(allOrders);
 
         // Updated to LOCALHOST for your demo
-        String pythonServiceUrl = "http://localhost:8000/filter-nearby";
+        String pythonServiceUrl = "https://splitbite-python.onrender.com/filter-nearby";
         RestTemplate restTemplate = new RestTemplate();
 
         // Casting result safely
